@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
-if g++ -o mathparser.out main.cpp; then
-    echo 'it built bruh'
+if g++ -g -o mathparser.out src/main.cpp; then
+    echo 'built math parser'
 else
-    echo 'nahhhhh'
+    echo 'failed build xd'
 fi

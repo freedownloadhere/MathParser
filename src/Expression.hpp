@@ -15,13 +15,16 @@ public:
     int evaluate() const {
         auto type = m_token.getType();
 
-        assert(type != Token::Type::Invalid);
-
-        if(type == Token::Type::Base)
-            return m_left->evaluate();
-
-        if(type == Token::Type::Number)
-            return m_token.getValue();
+        switch(type) {
+            case Token::Type::Invalid:
+                assert(0 && "invalid token in expression");
+            case Token::Type::Base:
+            case Token::Type::BracketLeft:
+                return m_left->evaluate();
+            case Token::Type::Number:
+                return m_token.getValue();
+            default: ;
+        }
 
         int left = m_left->evaluate();
         int right = m_right->evaluate();
@@ -48,42 +51,60 @@ public:
         return Token::precedence[m_token.getType()];
     }
 
+    Token::Type getType() const {
+        return m_token.getType();
+    }
+
     Token getToken() const {
         return m_token;
     }
 
-    void setNext(Expression* e) {
-        assert(m_left == nullptr || m_right == nullptr);
+    Expression* getUnary() const {
+        return m_left;
+    }
 
+    Expression* getBinaryLeft() const {
+        return m_left;
+    }
+
+    Expression* getBinaryRight() const {
+        return m_right;
+    }
+
+    void setNext(Expression* e) {
         if(m_left == nullptr)
             setLeft(e);
-        else
+        else if(m_right == nullptr)
             setRight(e);
+        else
+            assert(0 && "cannot set next, no empty children");
     }
 
     void setLeft(Expression* e) {
         m_left = e;
+        m_left->m_parent = this;
     }
 
     void setRight(Expression* e) {
         m_right = e;
-    }
-
-    Expression* getParent() {
-        return m_parent;
+        m_right->m_parent = this;
     }
 
     void removeChild(Expression* e) {
-        if(m_left == e)
+        if(m_left == e) {
+            m_left->m_parent = nullptr;
             m_left = nullptr;
-        else if(m_right == e)
+        }
+        else if(m_right == e) {
+            m_right->m_parent = nullptr;
             m_right = nullptr;
+        }
         else
             assert(0 && "couldnt find child bruh");
     }
 
-    void setParent(Expression* e) {
-        m_parent = e;
+    Expression* getParent() {
+        return m_parent;
     }
 
     void print(int tabcount = 0) const {

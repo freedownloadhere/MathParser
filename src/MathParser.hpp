@@ -11,6 +11,7 @@ namespace MathParser {
         auto lexer = Lexer(s);
         auto parser = Parser(lexer);
         auto expr = parser.getExpression();
+        expr->print();
         return expr->evaluate();
     }
 }

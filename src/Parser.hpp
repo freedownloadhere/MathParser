@@ -17,16 +17,39 @@ public:
 
             int currExprPrec = currExpr->getPrecedence();
 
-            if(currExprPrec >= lastExpr->getPrecedence()) {
+            if(
+                currExprPrec > lastExpr->getPrecedence() ||
+                token.getType() == Token::Type::BracketLeft
+            ) {
                 lastExpr->setNext(currExpr);
-                currExpr->setParent(lastExpr);
                 lastExpr = currExpr;
+                continue;
+            }
+
+            if(token.getType() == Token::Type::BracketRight) {
+                while(
+                    lastExpr->getParent() != nullptr &&
+                    lastExpr->getToken().getType() != Token::Type::BracketLeft
+                ) {
+                    lastExpr = lastExpr->getParent();
+                }
+
+                assert(lastExpr->getParent() != nullptr);
+                assert(lastExpr->getToken().getType() == Token::Type::BracketLeft);
+
+                auto subExpr = lastExpr->getUnary();
+                auto superExpr = lastExpr->getParent();
+                lastExpr->removeChild(subExpr);
+                superExpr->removeChild(lastExpr);
+                superExpr->setNext(subExpr);
+
+                lastExpr = subExpr;
                 continue;
             }
 
             while(
                 lastExpr->getParent() != nullptr &&
-                currExprPrec < lastExpr->getParent()->getPrecedence()
+                currExprPrec <= lastExpr->getParent()->getPrecedence()
             ) {
                 lastExpr = lastExpr->getParent();
             }
@@ -38,7 +61,6 @@ public:
                 parent->setNext(currExpr);
             }
 
-            currExpr->setParent(parent);
             currExpr->setNext(lastExpr);
 
             lastExpr = currExpr;

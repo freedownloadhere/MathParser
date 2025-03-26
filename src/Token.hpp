@@ -44,12 +44,13 @@ public:
 
     static inline std::map<Type, int> precedence = {
         {Type::Base, 1},
-        {Type::Add, 2},
-        {Type::Subtract, 2},
-        {Type::Multiply, 3},
-        {Type::Divide, 3},
-        {Type::Power, 4},
-        {Type::Number, 5},
+        {Type::BracketLeft, 2},
+        {Type::Add, 3},
+        {Type::Subtract, 3},
+        {Type::Multiply, 4},
+        {Type::Divide, 4},
+        {Type::Power, 5},
+        {Type::Number, 6},
     };
 
     Token(const Type type) : m_type(type) { }
