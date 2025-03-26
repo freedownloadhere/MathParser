@@ -34,16 +34,8 @@ public:
                     lastExpr = lastExpr->getParent();
                 }
 
-                assert(lastExpr->getParent() != nullptr);
                 assert(lastExpr->getToken().getType() == Token::Type::BracketLeft);
-
-                auto subExpr = lastExpr->getUnary();
-                auto superExpr = lastExpr->getParent();
-                lastExpr->removeChild(subExpr);
-                superExpr->removeChild(lastExpr);
-                superExpr->setNext(subExpr);
-
-                lastExpr = subExpr;
+                assert(lastExpr->getParent() != nullptr);
                 continue;
             }
 
