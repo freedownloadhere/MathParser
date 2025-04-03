@@ -12,21 +12,13 @@ public:
         auto lastExpr = m_expr;
 
         while(!lex.reachedEnd()) {
-            auto token = lex.nextToken();
-            auto currExpr = new Expression(token);
+            auto currToken = lex.nextToken();
+            auto currExpr = new Expression(currToken);
 
-            int currExprPrec = currExpr->getPrecedence();
+            const int currExprPrec = currExpr->getPrecedence();
+            const int lastExprPrec = lastExpr->getPrecedence();
 
-            if(
-                currExprPrec > lastExpr->getPrecedence() ||
-                token.getType() == Token::Type::BracketLeft
-            ) {
-                lastExpr->setNext(currExpr);
-                lastExpr = currExpr;
-                continue;
-            }
-
-            if(token.getType() == Token::Type::BracketRight) {
+            if(currToken.getType() == Token::Type::BracketRight) {
                 while(
                     lastExpr->getParent() != nullptr &&
                     lastExpr->getToken().getType() != Token::Type::BracketLeft
@@ -34,12 +26,22 @@ public:
                     lastExpr = lastExpr->getParent();
                 }
 
-                assert(lastExpr->getToken().getType() == Token::Type::BracketLeft);
+                assert(lastExpr->getType() == Token::Type::BracketLeft);
                 assert(lastExpr->getParent() != nullptr);
+
+                lastExpr->setType(Token::Type::BracketRight);
+
+                continue;
+            }
+
+            if(lastExpr->getType() == Token::Type::BracketLeft || currExprPrec > lastExprPrec) {
+                lastExpr->setNext(currExpr);
+                lastExpr = currExpr;
                 continue;
             }
 
             while(
+                lastExpr->getParent()->getType() != Token::Type::BracketLeft &&
                 lastExpr->getParent() != nullptr &&
                 currExprPrec <= lastExpr->getParent()->getPrecedence()
             ) {

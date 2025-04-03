@@ -20,6 +20,7 @@ public:
                 assert(0 && "invalid token in expression");
             case Token::Type::Base:
             case Token::Type::BracketLeft:
+            case Token::Type::BracketRight:
                 return m_left->evaluate();
             case Token::Type::Number:
                 return m_token.getValue();
@@ -53,6 +54,10 @@ public:
 
     Token::Type getType() const {
         return m_token.getType();
+    }
+
+    void setType(Token::Type type) {
+        m_token.setType(type);
     }
 
     Token getToken() const {

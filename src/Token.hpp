@@ -51,6 +51,7 @@ public:
         {Type::Power, 4},
         {Type::Number, 5},
         {Type::BracketLeft, 6},
+        {Type::BracketRight, 6},
     };
 
     Token(const Type type) : m_type(type) { }
@@ -58,6 +59,10 @@ public:
 
     Type getType() const {
         return m_type;
+    }
+
+    void setType(Type type) {
+        m_type = type;
     }
 
     int getValue() const {
