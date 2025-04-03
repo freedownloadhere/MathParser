@@ -1,8 +1,10 @@
 #ifndef H_MATH_EVALUATOR_TOKEN_HEADER_TOKEN_GUARD_HEADER_DEFINE_HEADER_PLEASE
 #define H_MATH_EVALUATOR_TOKEN_HEADER_TOKEN_GUARD_HEADER_DEFINE_HEADER_PLEASE
 
+#include <cassert>
 #include <map>
 #include <string>
+#include <variant>
 
 class Token {
 public:
@@ -17,6 +19,7 @@ public:
         Power,
         BracketLeft,
         BracketRight,
+        Label,
     };
 
     static inline std::map<char, Type> singleCharToToken = {
@@ -40,6 +43,7 @@ public:
         {Type::Power, "Power"},
         {Type::BracketLeft, "Left Bracket"},
         {Type::BracketRight, "Right Bracket"},
+        {Type::Label, "Label"},
     };
 
     static inline std::map<Type, int> precedence = {
@@ -55,7 +59,12 @@ public:
     };
 
     Token(const Type type) : m_type(type) { }
-    Token(const int value) : m_type(Type::Number), m_value(value) { }
+    Token(const int number) : m_type(Type::Number) {
+        m_value = number;
+    }
+    Token(const std::string& label) : m_type(Type::Label) {
+        m_value = label;
+    }
 
     Type getType() const {
         return m_type;
@@ -65,13 +74,20 @@ public:
         m_type = type;
     }
 
-    int getValue() const {
-        return m_value;
+    int getNumber() const {
+        assert(m_type == Type::Number);
+        return std::get<int>(m_value);
+    }
+
+    const std::string& getLabel() const {
+        assert(m_type == Type::Label);
+        return std::get<std::string>(m_value);
     }
 
 private:
     Type m_type = Type::Base;
-    int m_value = 0;
+
+    std::variant<int, std::string> m_value;
 };
 
 #endif

@@ -7,6 +7,11 @@
 #include "Parser.hpp"
 
 namespace MathParser {
+    Lexer lex(const std::string& s) {
+        auto lexer = Lexer(s);
+        return lexer;
+    }
+
     int evaluate(const std::string& s) {
         auto lexer = Lexer(s);
         auto parser = Parser(lexer);

@@ -26,16 +26,21 @@ public:
                 continue;
             }
 
-            if('0' <= c && c <= '9') {
+            if(m_isNumber(c)) {
                 int number = m_parseNumber(expr, p);
                 m_vec.push_back(Token(number));
                 --p;
                 continue;
             }
 
-            else {
-                m_vec.push_back(Token(Token::Type::Invalid));
+            if(m_isLabelChar(c)) {
+                std::string label = m_parseLabel(expr, p);
+                m_vec.push_back(Token(label));
+                --p;
+                continue;
             }
+
+            m_vec.push_back(Token(Token::Type::Invalid));
         }
 
         it = m_vec.begin();
@@ -50,7 +55,10 @@ public:
             std::cout << Token::tokenToString[type];
 
             if(type == Token::Type::Number)
-                std::cout << " (" << token.getValue() << ")";
+                std::cout << " " << token.getNumber();
+
+            if(type == Token::Type::Label)
+                std::cout << " \"" << token.getLabel() << "\"";
 
             std::cout << "; ";
         }
@@ -82,6 +90,27 @@ private:
         }
 
         return number;
+    }
+
+    std::string m_parseLabel(const std::string& expr, int& p) {
+        const int sz = expr.size();
+        std::string label = "";
+
+        // inefficient maybe?
+        while(p < sz && m_isLabelChar(expr[p])) {
+            label += expr[p];
+            ++p;
+        }
+
+        return label;
+    }
+
+    bool m_isLabelChar(const char c) const {
+        return c == '_' || m_isNumber(c) || m_isAlpha(c);
+    }
+
+    bool m_isAlpha(const char c) const {
+        return ('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z');
     }
 
     bool m_isNumber(const char c) const {

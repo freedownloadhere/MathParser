@@ -23,7 +23,7 @@ public:
             case Token::Type::BracketRight:
                 return m_left->evaluate();
             case Token::Type::Number:
-                return m_token.getValue();
+                return m_token.getNumber();
             default: ;
         }
 
@@ -127,7 +127,7 @@ public:
 
         if(type == Token::Type::Number) {
             m_print_tabs(tabcount);
-            std::cout << "Value: " << m_token.getValue() << '\n';
+            std::cout << "Value: " << m_token.getNumber() << '\n';
         }
 
         if(m_left != nullptr) {

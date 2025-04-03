@@ -9,8 +9,11 @@ int main() {
 
     getline(std::cin, input);
 
-    std::cout << "this is what ur expression evaluated to bruh\n";
-    std::cout << MathParser::evaluate(input) << '\n';
+    auto lexer = MathParser::lex(input);
+    lexer.print();
+
+    //std::cout << "this is what ur expression evaluated to bruh\n";
+    //std::cout << MathParser::evaluate(input) << '\n';
 
     return 0;
 }
