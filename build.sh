@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-if g++ -g -o mathparser.out src/main.cpp; then
+if g++ -g -o mathparser.out src/Main.cpp; then
     echo 'built math parser'
 else
     echo 'failed build xd'
