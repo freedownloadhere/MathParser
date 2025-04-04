@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 
+#include "LogicException.hpp"
+#include "SyntaxException.hpp"
 #include "Token.hpp"
 
 class Lexer {
@@ -40,7 +42,7 @@ public:
                 continue;
             }
 
-            m_vec.push_back(Token(Token::Type::Invalid));
+            throw SyntaxException("Invalid character in sequence");
         }
 
         it = m_vec.begin();
@@ -67,7 +69,8 @@ public:
     }
 
     Token nextToken() {
-        assert(it != m_vec.end());
+        if(it == m_vec.end())
+            throw LogicException("Reached end of tokens");
 
         auto token = *it;
         ++it;

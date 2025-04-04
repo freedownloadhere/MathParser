@@ -10,7 +10,6 @@ class Token {
 public:
     enum class Type {
         Base,
-        Invalid,
         Number,
         Add,
         Subtract,
@@ -34,7 +33,6 @@ public:
 
     static inline std::map<Type, std::string> tokenToString = {
         {Type::Base, "Base"},
-        {Type::Invalid, "Invalid"},
         {Type::Number, "Number"},
         {Type::Add, "Add"},
         {Type::Subtract, "Subtract"},
@@ -54,6 +52,7 @@ public:
         {Type::Divide, 3},
         {Type::Power, 4},
         {Type::Number, 5},
+        {Type::Label, 5},
         {Type::BracketLeft, 6},
         {Type::BracketRight, 6},
     };

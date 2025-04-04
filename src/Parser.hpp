@@ -3,6 +3,7 @@
 
 #include "Expression.hpp"
 #include "Lexer.hpp"
+#include "SyntaxException.hpp"
 
 class Parser {
 public:
@@ -26,8 +27,8 @@ public:
                     lastExpr = lastExpr->getParent();
                 }
 
-                assert(lastExpr->getType() == Token::Type::BracketLeft);
-                assert(lastExpr->getParent() != nullptr);
+                if(lastExpr->getType() != Token::Type::BracketLeft || lastExpr->getParent() == nullptr)
+                    throw SyntaxException("Right bracket is missing its left bracket");
 
                 lastExpr->setType(Token::Type::BracketRight);
 
@@ -61,7 +62,7 @@ public:
         }
     }
 
-    const Expression* getExpression() {
+    Expression* getExpression() const {
         return m_expr;
     }
 

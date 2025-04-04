@@ -2,6 +2,8 @@
 #include <string>
 
 #include "MathParser.hpp"
+#include "SyntaxException.hpp"
+#include "LogicException.hpp"
 
 int main() {
     std::string input;
@@ -9,11 +11,17 @@ int main() {
 
     getline(std::cin, input);
 
-    auto lexer = MathParser::lex(input);
-    lexer.print();
+    std::cout << "this is what ur expression evaluated to bruh\n";
 
-    //std::cout << "this is what ur expression evaluated to bruh\n";
-    //std::cout << MathParser::evaluate(input) << '\n';
+    try {
+        std::cout << MathParser::evaluate(input) << '\n';
+    }
+    catch(SyntaxException& e) {
+        std::cerr << "Syntax Exception: " << e.what() << '\n';
+    }
+    catch(LogicException& e) {
+        std::cerr << "Logic Exception: " << e.what() << '\n';
+    }
 
     return 0;
 }

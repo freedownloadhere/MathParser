@@ -5,6 +5,7 @@
 #include <cmath>
 #include <iostream>
 
+#include "LogicException.hpp"
 #include "Token.hpp"
 
 class Expression {
@@ -16,8 +17,6 @@ public:
         auto type = m_token.getType();
 
         switch(type) {
-            case Token::Type::Invalid:
-                assert(0 && "invalid token in expression");
             case Token::Type::Base:
             case Token::Type::BracketLeft:
             case Token::Type::BracketRight:
@@ -42,10 +41,8 @@ public:
             case Token::Type::Power:
                 return std::pow(left, right);
             default:
-                assert(0 && "should not be reached");
+                throw LogicException("Token could not be evaluated");
         }
-
-        return 0;
     }
 
     int getPrecedence() const {
@@ -82,7 +79,7 @@ public:
         else if(m_right == nullptr)
             setRight(e);
         else
-            assert(0 && "cannot set next, no empty children");
+            throw LogicException("SetNext was called on an already filled expression");
     }
 
     void setLeft(Expression* e) {
@@ -105,7 +102,7 @@ public:
             m_right = nullptr;
         }
         else
-            assert(0 && "couldnt find child bruh");
+            throw LogicException("Trying to remove a non-existing child from an expression");
     }
 
     Expression* getParent() {
@@ -145,7 +142,10 @@ public:
     }
 
     ~Expression() {
-        // FIX MEMORY LEAK LOL!
+        if(m_left)
+            delete m_left;
+        if(m_right)
+            delete m_right;
     }
 
 private:
