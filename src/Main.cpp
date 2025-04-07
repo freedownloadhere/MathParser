@@ -2,8 +2,7 @@
 #include <string>
 
 #include "MathParser.hpp"
-#include "SyntaxException.hpp"
-#include "LogicException.hpp"
+#include "Exception.hpp"
 
 int main() {
     std::string input;
@@ -16,11 +15,8 @@ int main() {
     try {
         std::cout << MathParser::evaluate(input) << '\n';
     }
-    catch(SyntaxException& e) {
-        std::cerr << "Syntax Exception: " << e.what() << '\n';
-    }
-    catch(LogicException& e) {
-        std::cerr << "Logic Exception: " << e.what() << '\n';
+    catch(Exception& e) {
+        std::cerr << "Exception: " << e.what() << '\n';
     }
 
     return 0;

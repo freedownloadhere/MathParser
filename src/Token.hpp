@@ -57,31 +57,17 @@ public:
         {Type::BracketRight, 6},
     };
 
-    Token(const Type type) : m_type(type) { }
-    Token(const int number) : m_type(Type::Number) {
-        m_value = number;
-    }
-    Token(const std::string& label) : m_type(Type::Label) {
-        m_value = label;
-    }
+    Token(const Type type);
+    Token(const int number);
+    Token(const std::string& label);
 
-    Type getType() const {
-        return m_type;
-    }
+    Type getType() const;
 
-    void setType(Type type) {
-        m_type = type;
-    }
+    void setType(Type type);
 
-    int getNumber() const {
-        assert(m_type == Type::Number);
-        return std::get<int>(m_value);
-    }
+    int getNumber() const;
 
-    const std::string& getLabel() const {
-        assert(m_type == Type::Label);
-        return std::get<std::string>(m_value);
-    }
+    const std::string& getLabel() const;
 
 private:
     Type m_type = Type::Base;
