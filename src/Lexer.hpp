@@ -1,5 +1,4 @@
-#ifndef H_MATH_EVALUATOR_LEXER_HEADER_LEXER_GUARD_HEADER_DEFINE_HEADER_PLEASE
-#define H_MATH_EVALUATOR_LEXER_HEADER_LEXER_GUARD_HEADER_DEFINE_HEADER_PLEASE
+#pragma once
 
 #include <vector>
 
@@ -16,9 +15,9 @@ public:
     bool reachedEnd();
 
 private:
-    int m_parseNumber(const std::string& expr, int& p);
+    int m_parseNumber(const std::string& expr, size_t& p);
 
-    std::string m_parseLabel(const std::string& expr, int& p);
+    std::string m_parseLabel(const std::string& expr, size_t& p);
 
     bool m_isLabelChar(const char c) const;
 
@@ -33,5 +32,3 @@ private:
     std::vector<Token> m_vec;
     std::vector<Token>::iterator it;
 };
-
-#endif

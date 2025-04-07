@@ -1,5 +1,4 @@
-#ifndef H_MATH_EVALUATOR_EXPRESSION_HEADER_EXPRESSION_GUARD_HEADER_DEFINE_HEADER_PLEASE
-#define H_MATH_EVALUATOR_EXPRESSION_HEADER_EXPRESSION_GUARD_HEADER_DEFINE_HEADER_PLEASE
+#pragma once
 
 #include "Token.hpp"
 
@@ -44,5 +43,3 @@ private:
     Expression* m_left = nullptr;
     Expression* m_right = nullptr;
 };
-
-#endif

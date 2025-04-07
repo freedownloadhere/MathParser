@@ -1,5 +1,4 @@
-#ifndef H_MATH_EVALUATOR_EXCEPTION_HEADER_MATHPARSER_GUARD_HEADER_DEFINE_HEADER_PLEASE
-#define H_MATH_EVALUATOR_EXCEPTION_HEADER_MATHPARSER_GUARD_HEADER_DEFINE_HEADER_PLEASE
+#pragma once
 
 #include <exception>
 #include <string>
@@ -14,5 +13,3 @@ public:
 private:
     std::string m_reason;
 };
-
-#endif

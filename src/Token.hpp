@@ -1,5 +1,4 @@
-#ifndef H_MATH_EVALUATOR_TOKEN_HEADER_TOKEN_GUARD_HEADER_DEFINE_HEADER_PLEASE
-#define H_MATH_EVALUATOR_TOKEN_HEADER_TOKEN_GUARD_HEADER_DEFINE_HEADER_PLEASE
+#pragma once
 
 #include <cassert>
 #include <map>
@@ -19,6 +18,7 @@ public:
         BracketLeft,
         BracketRight,
         Label,
+        Equals,
     };
 
     static inline std::map<char, Type> singleCharToToken = {
@@ -29,6 +29,7 @@ public:
         {'^', Type::Power},
         {'(', Type::BracketLeft},
         {')', Type::BracketRight},
+        {'=', Type::Equals},
     };
 
     static inline std::map<Type, std::string> tokenToString = {
@@ -42,6 +43,7 @@ public:
         {Type::BracketLeft, "Left Bracket"},
         {Type::BracketRight, "Right Bracket"},
         {Type::Label, "Label"},
+        {Type::Equals, "Equals"},
     };
 
     static inline std::map<Type, int> precedence = {
@@ -74,5 +76,3 @@ private:
 
     std::variant<int, std::string> m_value;
 };
-
-#endif

@@ -6,9 +6,9 @@
 #include "Exception.hpp"
 
 Lexer::Lexer(const std::string& expr) {
-    const int sz = expr.size();
+    const size_t sz = expr.size();
 
-    for(int p = 0; p < sz; ++p) {
+    for(size_t p = 0; p < sz; ++p) {
         const char c = expr[p];
 
         if(m_isWhitespace(c))
@@ -66,7 +66,7 @@ Token Lexer::nextToken() {
     if(it == m_vec.end())
         throw Exception("Reached end of tokens");
 
-    auto token = *it;
+    auto& token = *it;
     ++it;
     return token;
 }
@@ -75,8 +75,8 @@ bool Lexer::reachedEnd() {
     return it == m_vec.end();
 }
 
-int Lexer::m_parseNumber(const std::string& expr, int& p) {
-    const int sz = expr.size();
+int Lexer::m_parseNumber(const std::string& expr, size_t& p) {
+    const size_t sz = expr.size();
     int number = 0;
 
     while(p < sz && m_isNumber(expr[p])) {
@@ -88,15 +88,18 @@ int Lexer::m_parseNumber(const std::string& expr, int& p) {
     return number;
 }
 
-std::string Lexer::m_parseLabel(const std::string& expr, int& p) {
-    const int sz = expr.size();
-    std::string label = "";
+std::string Lexer::m_parseLabel(const std::string& expr, size_t& p) {
+    const size_t sz = expr.size();
 
-    // inefficient maybe?
+    const size_t start = p;
+
     while(p < sz && m_isLabelChar(expr[p])) {
-        label += expr[p];
         ++p;
     }
+
+    const size_t end = p;
+
+    std::string label = expr.substr(start, end - start);
 
     return label;
 }
@@ -114,7 +117,7 @@ bool Lexer::m_isNumber(const char c) const {
 }
 
 bool Lexer::m_isWhitespace(const char c) const {
-    return c == ' ' || c == '\n';
+    return c <= 32;
 }
 
 int Lexer::m_toNumber(const char c) const {

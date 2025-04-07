@@ -1,6 +1,5 @@
 #include "Token.hpp"
 
-
 Token::Token(const Type type) : m_type(type) { }
 Token::Token(const int number) : m_type(Type::Number) {
     m_value = number;
