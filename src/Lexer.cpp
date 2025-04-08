@@ -8,11 +8,18 @@
 Lexer::Lexer(const std::string& expr) {
     const size_t sz = expr.size();
 
+    int bracketDepth = 0;
+
     for(size_t p = 0; p < sz; ++p) {
         const char c = expr[p];
 
         if(m_isWhitespace(c))
             continue;
+
+        if (c == '(') bracketDepth++;
+        if (c == ')') bracketDepth--;
+        if (bracketDepth < 0)
+            throw Exception("Incorrect brackets in sequence");
 
         auto type = Token::singleCharToToken[c];
 
@@ -37,6 +44,9 @@ Lexer::Lexer(const std::string& expr) {
 
         throw Exception("Invalid character in sequence");
     }
+
+    if (m_vec.empty())
+        throw Exception("The expression is empty");
 
     it = m_vec.begin();
 }

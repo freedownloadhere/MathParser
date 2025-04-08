@@ -12,13 +12,16 @@ int main() {
 	getline(std::cin, input);
 
 	MathEnv env;
+	int value = 0;
 
 	try {
-		std::cout << "Evaluated to: " << env.evaluate(input) << '\n';
+		value = env.evaluate(input);
 	}
 	catch(Exception& e) {
 		std::cerr << "Exception: " << e.what() << '\n';
+		return 0;
 	}
 
+	std::cout << "Evaluated to: " << value << '\n';
 	return 0;
 }
