@@ -3,6 +3,7 @@
 #include <string>
 
 #include "MathEnv.hpp"
+#include "Exception.hpp"
 
 int main() {
 	std::ifstream testInput("tests.txt");
@@ -17,7 +18,16 @@ int main() {
 		testInput >> expected;
 		getline(testInput, toEvaluate);
 
-		int value = env.evaluate(toEvaluate);
+		int value = 0;
+
+		try {
+			value = env.evaluate(toEvaluate);
+		}
+		catch (Exception& e) {
+			std::cerr << e.what() << '\n';
+			failed++;
+			continue;
+		}
 
 		if (value != expected) {
 			failed++;
