@@ -3,6 +3,7 @@
 #include <cassert>
 #include <map>
 #include <string>
+#include <string_view>
 #include <variant>
 
 class Token {
@@ -32,7 +33,7 @@ public:
         {'=', Type::Equals},
     };
 
-    static inline std::map<Type, std::string> tokenToString = {
+    static inline std::map<Type, std::string_view> tokenToString = {
         {Type::Base, "Base"},
         {Type::Number, "Number"},
         {Type::Add, "Add"},
@@ -48,19 +49,20 @@ public:
 
     static inline std::map<Type, int> precedence = {
         {Type::Base, 1},
-        {Type::Add, 2},
-        {Type::Subtract, 2},
-        {Type::Multiply, 3},
-        {Type::Divide, 3},
-        {Type::Power, 4},
-        {Type::Number, 5},
-        {Type::Label, 5},
-        {Type::BracketLeft, 6},
-        {Type::BracketRight, 6},
+        {Type::Equals, 2},
+        {Type::Add, 3},
+        {Type::Subtract, 3},
+        {Type::Multiply, 4},
+        {Type::Divide, 4},
+        {Type::Power, 5},
+        {Type::Number, 6},
+        {Type::Label, 6},
+        {Type::BracketLeft, 7},
+        {Type::BracketRight, 7},
     };
 
     Token(const Type type);
-    Token(const int number);
+    Token(const std::int64_t number);
     Token(const std::string& label);
 
     Type getType() const;
@@ -69,10 +71,10 @@ public:
 
     int getNumber() const;
 
-    const std::string& getLabel() const;
+    std::string_view getLabel() const;
 
 private:
     Type m_type = Type::Base;
 
-    std::variant<int, std::string> m_value;
+    std::variant<std::int64_t, std::string> m_value;
 };

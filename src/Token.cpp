@@ -1,7 +1,7 @@
 #include "Token.hpp"
 
 Token::Token(const Type type) : m_type(type) { }
-Token::Token(const int number) : m_type(Type::Number) {
+Token::Token(const std::int64_t number) : m_type(Type::Number) {
     m_value = number;
 }
 Token::Token(const std::string& label) : m_type(Type::Label) {
@@ -18,10 +18,10 @@ void Token::setType(Type type) {
 
 int Token::getNumber() const {
     assert(m_type == Type::Number);
-    return std::get<int>(m_value);
+    return std::get<std::int64_t>(m_value);
 }
 
-const std::string& Token::getLabel() const {
+std::string_view Token::getLabel() const {
     assert(m_type == Type::Label);
     return std::get<std::string>(m_value);
 }

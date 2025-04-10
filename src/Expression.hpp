@@ -7,7 +7,7 @@ public:
     Expression();
     Expression(const Token token);
 
-    int evaluate() const;
+    std::int64_t evaluate() const;
 
     int getPrecedence() const;
 

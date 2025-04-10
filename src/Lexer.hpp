@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <string>
 
 #include "Token.hpp"
 
@@ -15,7 +16,7 @@ public:
     bool reachedEnd();
 
 private:
-    int m_parseNumber(const std::string& expr, size_t& p);
+    std::int64_t m_parseNumber(const std::string& expr, size_t& p);
 
     std::string m_parseLabel(const std::string& expr, size_t& p);
 

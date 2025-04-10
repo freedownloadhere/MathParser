@@ -5,8 +5,5 @@
 
 class MathEnv {
 public:
-	int evaluate(const std::string& toEvaluate);
-
-private:
-	std::unordered_map<std::string, int> m_variableMap;
+	std::int64_t evaluate(const std::string& toEvaluate);
 };

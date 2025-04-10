@@ -1,7 +1,6 @@
 #include "Lexer.hpp"
 
 #include <iostream>
-#include <string>
 
 #include "Exception.hpp"
 
@@ -21,7 +20,7 @@ Lexer::Lexer(const std::string& expr) {
         if (bracketDepth < 0)
             throw Exception("Incorrect brackets in sequence");
 
-        auto type = Token::singleCharToToken[c];
+        Token::Type type = Token::singleCharToToken[c];
 
         if(type != Token::Type::Base) {
             m_vec.push_back(Token(type));
@@ -55,7 +54,7 @@ void Lexer::print() const {
     std::cout << "{ ";
 
     for(const auto& token : m_vec) {
-        auto type = token.getType();
+        Token::Type type = token.getType();
 
         std::cout << Token::tokenToString[type];
 
@@ -85,12 +84,13 @@ bool Lexer::reachedEnd() {
     return it == m_vec.end();
 }
 
-int Lexer::m_parseNumber(const std::string& expr, size_t& p) {
+std::int64_t Lexer::m_parseNumber(const std::string& expr, size_t& p) {
     const size_t sz = expr.size();
-    int number = 0;
+
+    std::int64_t number = 0;
 
     while(p < sz && m_isNumber(expr[p])) {
-        int digit = m_toNumber(expr[p]);
+        std::int64_t digit = m_toNumber(expr[p]);
         number = number * 10 + digit;
         ++p;
     }
@@ -103,9 +103,8 @@ std::string Lexer::m_parseLabel(const std::string& expr, size_t& p) {
 
     const size_t start = p;
 
-    while(p < sz && m_isLabelChar(expr[p])) {
+    while(p < sz && m_isLabelChar(expr[p]))
         ++p;
-    }
 
     const size_t end = p;
 

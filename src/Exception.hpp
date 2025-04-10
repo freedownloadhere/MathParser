@@ -1,15 +1,15 @@
 #pragma once
 
 #include <exception>
-#include <string>
+#include <string_view>
 
 class Exception : public std::exception {
 public:
     Exception();
-    Exception(const std::string& reason);
+    Exception(std::string_view reason);
 
     virtual const char* what() const throw() override;
 
 private:
-    std::string m_reason;
+    std::string_view m_reason;
 };
