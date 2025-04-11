@@ -33,7 +33,7 @@ Value* Expression::evaluate(VariableMap& variableMap) const {
 		if (leftLValue == nullptr)
 			throw Exception("Left side must be an lvalue");
 		leftLValue->write(right->read());
-		return new RValue(0);
+		return new RValue(right->read());
 	}
 
 	switch(type) {
