@@ -1,7 +1,10 @@
 #pragma once
 
+#include <cstdint>
 #include <string>
 #include <unordered_map>
+
+#include "Value.hpp"
 
 class VariableMap {
 public:
@@ -11,6 +14,8 @@ public:
 
 	void writeVariable(const std::string& name, std::int64_t value);
 
+	LValue* getVariablePtr(const std::string& name);
+
 private:
-	std::unordered_map<std::string, std::int64_t> m_map;
+	std::unordered_map<std::string, LValue> m_map;
 };

@@ -10,7 +10,7 @@
 Expression::Expression() : m_token(Token(Token::Type::Base)) { }
 Expression::Expression(const Token token) : m_token(token) { }
 
-Value Expression::evaluate(const VariableMap& variableMap) const {
+Value* Expression::evaluate(VariableMap& variableMap) const {
 	Token::Type type = m_token.getType();
 
 	switch(type) {
@@ -19,28 +19,36 @@ Value Expression::evaluate(const VariableMap& variableMap) const {
 		case Token::Type::BracketRight:
 			return m_left->evaluate(variableMap);
 		case Token::Type::Number:
-			return RValue(m_token.getNumber());
+			return m_token.getNumber();
 		case Token::Type::Label:
-			return LValue(variableMap, m_token.getLabel());
+			return variableMap.getVariablePtr(*m_token.getLabel());
 		default:;
 	}
 
-	Value left = m_left->evaluate(variableMap);
-	Value right = m_right->evaluate(variableMap);
+	Value* left = m_left->evaluate(variableMap);
+	Value* right = m_right->evaluate(variableMap);
+
+	if (type == Token::Type::Equals) {
+		LValue* leftLValue = dynamic_cast<LValue*>(left);
+		if (leftLValue == nullptr)
+			throw Exception("Left side must be an lvalue");
+		leftLValue->write(right->read());
+		return new RValue(0);
+	}
 
 	switch(type) {
 		case Token::Type::Add:
-			return left.read() + right.read();
+			return new RValue(left->read() + right->read());
 		case Token::Type::Subtract:
-			return left - right;
+			return new RValue(left->read() - right->read());
 		case Token::Type::Multiply:
-			return left * right;
+			return new RValue(left->read() * right->read());
 		case Token::Type::Divide:
-			if (right == 0) 
+			if (right->read() == 0)
 				throw Exception("Division by zero");
-			return left / right;
+			return new RValue(left->read() / right->read());
 		case Token::Type::Power:
-			return static_cast<std::int64_t>(std::pow(left, right));
+			return new RValue(static_cast<std::int64_t>(std::pow(left->read(), right->read())));
 		default:
 			throw Exception("Token could not be evaluated");
 	}

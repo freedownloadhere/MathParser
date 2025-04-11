@@ -9,7 +9,7 @@ public:
     Expression();
     Expression(const Token token);
 
-    Value evaluate(const VariableMap& variableMap) const;
+    Value* evaluate(VariableMap& variableMap) const;
 
     int getPrecedence() const;
 

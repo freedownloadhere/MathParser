@@ -6,6 +6,8 @@
 #include <string_view>
 #include <variant>
 
+#include "Value.hpp"
+
 class Token {
 public:
     enum class Type {
@@ -69,12 +71,17 @@ public:
 
     void setType(Type type);
 
-    std::int64_t getNumber() const;
+    RValue* getNumber() const;
 
-    const std::string& getLabel() const;
+    std::string* getLabel() const;
+
+    ~Token();
 
 private:
     Type m_type = Type::Base;
 
-    std::variant<std::int64_t, std::string> m_value;
+    union Contents {
+        std::string* m_label;
+        RValue* m_rvalue;
+    } m_as{};
 };

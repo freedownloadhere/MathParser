@@ -14,7 +14,7 @@ Parser::Parser(Lexer& lex, VariableMap& variableMap) {
         const int lastExprPrec = lastExpr->getPrecedence();
 
         if (currToken.getType() == Token::Type::Label) {
-            const std::string& label = currToken.getLabel();
+            const std::string& label = *currToken.getLabel();
             variableMap.addVariable(label);
         }
 

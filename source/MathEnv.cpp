@@ -11,5 +11,5 @@ std::int64_t MathEnv::evaluate(const std::string& toEvaluate) {
 	auto parser = Parser(lexer, m_variableMap);
 	auto expr = std::unique_ptr<Expression>(parser.getExpression());
 	auto result = expr->evaluate(m_variableMap);
-	return result;
+	return result->read();
 }

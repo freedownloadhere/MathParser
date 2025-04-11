@@ -2,10 +2,10 @@
 
 Token::Token(const Type type) : m_type(type) { }
 Token::Token(const std::int64_t number) : m_type(Type::Number) {
-    m_value = number;
+    m_as.m_rvalue = new RValue(number);
 }
 Token::Token(const std::string& label) : m_type(Type::Label) {
-    m_value = label;
+    m_as.m_label = new std::string(label);
 }
 
 Token::Type Token::getType() const {
@@ -16,12 +16,20 @@ void Token::setType(Type type) {
     m_type = type;
 }
 
-std::int64_t Token::getNumber() const {
+RValue* Token::getNumber() const {
     assert(m_type == Type::Number);
-    return std::get<std::int64_t>(m_value);
+    return m_as.m_rvalue;
 }
 
-const std::string& Token::getLabel() const {
+std::string* Token::getLabel() const {
     assert(m_type == Type::Label);
-    return std::get<std::string>(m_value);
+    return m_as.m_label;
+}
+
+Token::~Token() {
+    //if (m_type == Type::Label)
+        //delete m_as.m_label;
+
+    //else if (m_type == Type::Number)
+        //delete m_as.m_rvalue;
 }
