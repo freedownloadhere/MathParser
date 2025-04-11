@@ -28,7 +28,7 @@ Lexer::Lexer(const std::string& expr) {
         }
 
         if(m_isNumber(c)) {
-            int number = m_parseNumber(expr, p);
+            std::int64_t number = m_parseNumber(expr, p);
             m_vec.push_back(Token(number));
             --p;
             continue;

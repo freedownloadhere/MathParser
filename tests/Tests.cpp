@@ -18,7 +18,7 @@ int main() {
 		testInput >> expected;
 		getline(testInput, toEvaluate);
 
-		int value = 0;
+		std::int64_t value = 0;
 
 		try {
 			value = env.evaluate(toEvaluate);

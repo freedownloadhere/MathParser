@@ -1,13 +1,15 @@
 #pragma once
 
 #include "Token.hpp"
+#include "Value.hpp"
+#include "VariableMap.hpp"
 
 class Expression {
 public:
     Expression();
     Expression(const Token token);
 
-    std::int64_t evaluate() const;
+    Value evaluate(const VariableMap& variableMap) const;
 
     int getPrecedence() const;
 

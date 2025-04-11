@@ -5,29 +5,32 @@
 #include <iostream>
 
 #include "Exception.hpp"
+#include "VariableMap.hpp"
 
 Expression::Expression() : m_token(Token(Token::Type::Base)) { }
 Expression::Expression(const Token token) : m_token(token) { }
 
-std::int64_t Expression::evaluate() const {
+Value Expression::evaluate(const VariableMap& variableMap) const {
 	Token::Type type = m_token.getType();
 
 	switch(type) {
 		case Token::Type::Base:
 		case Token::Type::BracketLeft:
 		case Token::Type::BracketRight:
-			return m_left->evaluate();
+			return m_left->evaluate(variableMap);
 		case Token::Type::Number:
-			return m_token.getNumber();
-		default: ;
+			return RValue(m_token.getNumber());
+		case Token::Type::Label:
+			return LValue(variableMap, m_token.getLabel());
+		default:;
 	}
 
-	std::int64_t left = m_left->evaluate();
-	std::int64_t right = m_right->evaluate();
+	Value left = m_left->evaluate(variableMap);
+	Value right = m_right->evaluate(variableMap);
 
 	switch(type) {
 		case Token::Type::Add:
-			return left + right;
+			return left.read() + right.read();
 		case Token::Type::Subtract:
 			return left - right;
 		case Token::Type::Multiply:

@@ -16,12 +16,12 @@ void Token::setType(Type type) {
     m_type = type;
 }
 
-int Token::getNumber() const {
+std::int64_t Token::getNumber() const {
     assert(m_type == Type::Number);
     return std::get<std::int64_t>(m_value);
 }
 
-std::string_view Token::getLabel() const {
+const std::string& Token::getLabel() const {
     assert(m_type == Type::Label);
     return std::get<std::string>(m_value);
 }

@@ -69,9 +69,9 @@ public:
 
     void setType(Type type);
 
-    int getNumber() const;
+    std::int64_t getNumber() const;
 
-    std::string_view getLabel() const;
+    const std::string& getLabel() const;
 
 private:
     Type m_type = Type::Base;

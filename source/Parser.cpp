@@ -1,8 +1,7 @@
 #include "Parser.hpp"
-
 #include "Exception.hpp"
 
-Parser::Parser(Lexer& lex) {
+Parser::Parser(Lexer& lex, VariableMap& variableMap) {
     m_expr = new Expression();
 
     auto lastExpr = m_expr;
@@ -13,6 +12,11 @@ Parser::Parser(Lexer& lex) {
 
         const int currExprPrec = currExpr->getPrecedence();
         const int lastExprPrec = lastExpr->getPrecedence();
+
+        if (currToken.getType() == Token::Type::Label) {
+            const std::string& label = currToken.getLabel();
+            variableMap.addVariable(label);
+        }
 
         if(currToken.getType() == Token::Type::BracketRight) {
             while(
