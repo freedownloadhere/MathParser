@@ -28,10 +28,6 @@ public:
 
     void setNext(Expression* e);
 
-    void setLeft(Expression* e);
-
-    void setRight(Expression* e);
-
     void removeChild(Expression* e);
 
     Expression* getParent();
@@ -42,7 +38,6 @@ public:
 
 private:
     Token m_token;
+    std::vector<Expression*> m_params;
     Expression* m_parent = nullptr;
-    Expression* m_left = nullptr;
-    Expression* m_right = nullptr;
 };

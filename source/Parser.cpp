@@ -46,8 +46,8 @@ Parser::Parser(Lexer& lex, MemoryPool& variableMap) {
         }
 
         while(
-            lastExpr->getParent()->getType() != &Token::Type::BracketLeft &&
             lastExpr->getParent() != nullptr &&
+            lastExpr->getParent()->getType() != &Token::Type::BracketLeft &&
             currExprPrec <= lastExpr->getParent()->getPrecedence()
         ) {
             lastExpr = lastExpr->getParent();

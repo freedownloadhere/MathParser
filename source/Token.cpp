@@ -16,6 +16,7 @@ const Token::Type Token::Type::BracketRight{ "Closed Bracket", 7, ')' };
 
 Token::Token(const Type* type) : m_type(type) { }
 Token::Token(const std::int64_t number) : m_type(&Type::Number) {
+    // bad
     m_as.m_rvalue = new RValue(number);
 }
 Token::Token(const std::string& label) : m_type(&Type::Label) {

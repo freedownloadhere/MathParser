@@ -18,13 +18,15 @@ Value* Expression::evaluate(MemoryPool& mempool, FuncTable& functable) const {
 	if(type == &Token::Type::Label)
 		return mempool.getVariablePtr(*m_token.getLabel());
 
-	Value* op1 = m_left->evaluate(mempool, functable);
+	assert(m_params.size() >= 1);
+	Value* op1 = m_params.at(0)->evaluate(mempool, functable);
 
 	auto unaryFunc = functable.getUnary(type->getID());
 	if (unaryFunc != nullptr)
 		return unaryFunc(mempool, op1);
 
-	Value* op2 = m_right->evaluate(mempool, functable);
+	assert(m_params.size() >= 2);
+	Value* op2 = m_params.at(1)->evaluate(mempool, functable);
 
 	auto binaryFunc = functable.getBinary(type->getID());
 	if (binaryFunc != nullptr)
@@ -50,47 +52,33 @@ Token Expression::getToken() const {
 }
 
 Expression* Expression::getUnary() const {
-	return m_left;
+	assert(m_params.size() == 1);
+	return m_params.at(0);
 }
 
 Expression* Expression::getBinaryLeft() const {
-	return m_left;
+	assert(m_params.size() == 2);
+	return m_params.at(0);
 }
 
 Expression* Expression::getBinaryRight() const {
-	return m_right;
+	assert(m_params.size() == 2);
+	return m_params.at(1);
 }
 
 void Expression::setNext(Expression* e) {
-	if(m_left == nullptr)
-		setLeft(e);
-	else if(m_right == nullptr)
-		setRight(e);
-	else
-		throw Exception("SetNext was called on an already filled expression");
-}
-
-void Expression::setLeft(Expression* e) {
-	m_left = e;
-	m_left->m_parent = this;
-}
-
-void Expression::setRight(Expression* e) {
-	m_right = e;
-	m_right->m_parent = this;
+	m_params.push_back(e);
+	e->m_parent = this;
 }
 
 void Expression::removeChild(Expression* e) {
-	if(m_left == e) {
-		m_left->m_parent = nullptr;
-		m_left = nullptr;
-	}
-	else if(m_right == e) {
-		m_right->m_parent = nullptr;
-		m_right = nullptr;
-	}
+	auto it = m_params.begin();
+	while (it != m_params.end() && *it != e)
+		++it;
+	if (it != m_params.end())
+		m_params.erase(it);
 	else
-	throw Exception("Trying to remove a non-existing child from an expression");
+		throw Exception("Tried to erase a child that does not exist");
 }
 
 Expression* Expression::getParent() {
@@ -115,13 +103,8 @@ void Expression::print(int tabcount) const {
 		std::cout << "Value: " << m_token.getRValue() << '\n';
 	}
 
-	if(m_left != nullptr) {
-		m_left->print(tabcount);
-	}
-
-	if(m_right != nullptr) {
-		m_right->print(tabcount);
-	}
+	for (const auto param : m_params)
+		param->print(tabcount);
 
 	tabcount--;
 
@@ -130,6 +113,6 @@ void Expression::print(int tabcount) const {
 }
 
 Expression::~Expression() {
-	delete m_left;
-	delete m_right;
+	for (const auto param : m_params)
+		delete param;
 }
