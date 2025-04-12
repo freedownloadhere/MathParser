@@ -1,7 +1,5 @@
 #include "Lexer.hpp"
 
-#include <iostream>
-
 #include "Exception.hpp"
 
 Lexer::Lexer(const std::string& expr) {
@@ -59,7 +57,7 @@ void Lexer::print() const {
         std::cout << Token::tokenToString[type];
 
         if(type == Token::Type::Number)
-            std::cout << " " << token.getNumber();
+            std::cout << " " << token.getRValue();
 
         if(type == Token::Type::Label)
             std::cout << " \"" << token.getLabel() << "\"";

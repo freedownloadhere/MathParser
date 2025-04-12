@@ -1,10 +1,5 @@
 #pragma once
-
-#include <cassert>
-#include <map>
-#include <string>
-#include <string_view>
-#include <variant>
+#include "Pch.hpp"
 
 #include "Value.hpp"
 
@@ -24,7 +19,7 @@ public:
         Equals,
     };
 
-    static inline std::map<char, Type> singleCharToToken = {
+    static inline std::unordered_map<char, Type> singleCharToToken = {
         {'+', Type::Add},
         {'-', Type::Subtract},
         {'*', Type::Multiply},
@@ -35,7 +30,7 @@ public:
         {'=', Type::Equals},
     };
 
-    static inline std::map<Type, std::string_view> tokenToString = {
+    static inline std::unordered_map<Type, std::string_view> tokenToString = {
         {Type::Base, "Base"},
         {Type::Number, "Number"},
         {Type::Add, "Add"},
@@ -49,7 +44,7 @@ public:
         {Type::Equals, "Equals"},
     };
 
-    static inline std::map<Type, int> precedence = {
+    static inline std::unordered_map<Type, int> precedence = {
         {Type::Base, 1},
         {Type::Equals, 2},
         {Type::Add, 3},
@@ -71,11 +66,9 @@ public:
 
     void setType(Type type);
 
-    RValue* getNumber() const;
+    RValue* getRValue() const;
 
     std::string* getLabel() const;
-
-    ~Token();
 
 private:
     Type m_type = Type::Base;

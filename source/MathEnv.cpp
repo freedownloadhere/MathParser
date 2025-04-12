@@ -1,7 +1,5 @@
 #include "MathEnv.hpp"
 
-#include <memory>
-
 #include "Lexer.hpp"
 #include "Parser.hpp"
 #include "Expression.hpp"

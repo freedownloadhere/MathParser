@@ -1,10 +1,10 @@
 #pragma once
-
-#include <cstdint>
+#include "Pch.hpp"
 
 class Value {
 public:
 	virtual std::int64_t read() const = 0;
+	virtual ~Value() = default;
 
 protected:
 	Value(std::int64_t value = 0);

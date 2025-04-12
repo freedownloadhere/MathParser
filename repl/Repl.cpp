@@ -1,8 +1,7 @@
-#include <iostream>
-#include <string>
+#include "Pch.hpp"
 
-#include "MathEnv.hpp"
 #include "Exception.hpp"
+#include "MathEnv.hpp"
 
 int main() {
 	std::cout << "=== Math REPL ===\n";

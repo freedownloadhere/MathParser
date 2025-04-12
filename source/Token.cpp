@@ -16,7 +16,7 @@ void Token::setType(Type type) {
     m_type = type;
 }
 
-RValue* Token::getNumber() const {
+RValue* Token::getRValue() const {
     assert(m_type == Type::Number);
     return m_as.m_rvalue;
 }
@@ -24,12 +24,4 @@ RValue* Token::getNumber() const {
 std::string* Token::getLabel() const {
     assert(m_type == Type::Label);
     return m_as.m_label;
-}
-
-Token::~Token() {
-    //if (m_type == Type::Label)
-        //delete m_as.m_label;
-
-    //else if (m_type == Type::Number)
-        //delete m_as.m_rvalue;
 }

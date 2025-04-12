@@ -1,9 +1,5 @@
 #include "Expression.hpp"
 
-#include <cassert>
-#include <cmath>
-#include <iostream>
-
 #include "Exception.hpp"
 #include "NativeFunctions.hpp"
 #include "MemoryPool.hpp"
@@ -20,7 +16,7 @@ Value* Expression::evaluate(MemoryPool& mempool) const {
 		case Token::Type::BracketRight:
 			return m_left->evaluate(mempool);
 		case Token::Type::Number:
-			return m_token.getNumber();
+			return m_token.getRValue();
 		case Token::Type::Label:
 			return mempool.getVariablePtr(*m_token.getLabel());
 		default:;
@@ -126,7 +122,7 @@ void Expression::print(int tabcount) const {
 
 	if(type == Token::Type::Number) {
 		m_print_tabs(tabcount);
-		std::cout << "Value: " << m_token.getNumber() << '\n';
+		std::cout << "Value: " << m_token.getRValue() << '\n';
 	}
 
 	if(m_left != nullptr) {
