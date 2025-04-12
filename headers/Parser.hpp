@@ -2,11 +2,11 @@
 
 #include "Expression.hpp"
 #include "Lexer.hpp"
-#include "VariableMap.hpp"
+#include "MemoryPool.hpp"
 
 class Parser {
 public:
-    Parser(Lexer& lex, VariableMap& variableMap);
+    Parser(Lexer& lex, MemoryPool& variableMap);
     Expression* getExpression() const;
 
 private:

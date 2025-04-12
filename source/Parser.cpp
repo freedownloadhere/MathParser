@@ -1,7 +1,7 @@
 #include "Parser.hpp"
 #include "Exception.hpp"
 
-Parser::Parser(Lexer& lex, VariableMap& variableMap) {
+Parser::Parser(Lexer& lex, MemoryPool& variableMap) {
     m_expr = new Expression();
 
     auto lastExpr = m_expr;
@@ -15,7 +15,7 @@ Parser::Parser(Lexer& lex, VariableMap& variableMap) {
 
         if (currToken.getType() == Token::Type::Label) {
             const std::string& label = *currToken.getLabel();
-            variableMap.addVariable(label);
+            variableMap.storeVariable(label);
         }
 
         if(currToken.getType() == Token::Type::BracketRight) {

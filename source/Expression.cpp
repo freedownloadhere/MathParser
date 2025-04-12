@@ -5,50 +5,43 @@
 #include <iostream>
 
 #include "Exception.hpp"
-#include "VariableMap.hpp"
+#include "NativeFunctions.hpp"
+#include "MemoryPool.hpp"
 
 Expression::Expression() : m_token(Token(Token::Type::Base)) { }
 Expression::Expression(const Token token) : m_token(token) { }
 
-Value* Expression::evaluate(VariableMap& variableMap) const {
+Value* Expression::evaluate(MemoryPool& mempool) const {
 	Token::Type type = m_token.getType();
 
 	switch(type) {
 		case Token::Type::Base:
 		case Token::Type::BracketLeft:
 		case Token::Type::BracketRight:
-			return m_left->evaluate(variableMap);
+			return m_left->evaluate(mempool);
 		case Token::Type::Number:
 			return m_token.getNumber();
 		case Token::Type::Label:
-			return variableMap.getVariablePtr(*m_token.getLabel());
+			return mempool.getVariablePtr(*m_token.getLabel());
 		default:;
 	}
 
-	Value* left = m_left->evaluate(variableMap);
-	Value* right = m_right->evaluate(variableMap);
-
-	if (type == Token::Type::Equals) {
-		LValue* leftLValue = dynamic_cast<LValue*>(left);
-		if (leftLValue == nullptr)
-			throw Exception("Left side must be an lvalue");
-		leftLValue->write(right->read());
-		return new RValue(right->read());
-	}
+	Value* left = m_left->evaluate(mempool);
+	Value* right = m_right->evaluate(mempool);
 
 	switch(type) {
 		case Token::Type::Add:
-			return new RValue(left->read() + right->read());
+			return NativeFunc::add(mempool, left, right);
 		case Token::Type::Subtract:
-			return new RValue(left->read() - right->read());
+			return NativeFunc::sub(mempool, left, right);
 		case Token::Type::Multiply:
-			return new RValue(left->read() * right->read());
+			return NativeFunc::mul(mempool, left, right);
 		case Token::Type::Divide:
-			if (right->read() == 0)
-				throw Exception("Division by zero");
-			return new RValue(left->read() / right->read());
+			return NativeFunc::div(mempool, left, right);
 		case Token::Type::Power:
-			return new RValue(static_cast<std::int64_t>(std::pow(left->read(), right->read())));
+			return NativeFunc::pow(mempool, left, right);
+		case Token::Type::Equals:
+			return NativeFunc::assign(mempool, left, right);
 		default:
 			throw Exception("Token could not be evaluated");
 	}

@@ -5,7 +5,7 @@
 #include "Exception.hpp"
 
 int main() {
-	std::cout << "(Interactive Test)\n";
+	std::cout << "=== Math REPL ===\n";
 	std::cout << "Input an expression:\n";
 
 	MathEnv env;
@@ -17,7 +17,7 @@ int main() {
 			std::int64_t value = 0;
 			getline(std::cin, input);
 			value = env.evaluate(input);
-			std::cout << "Evaluated to: " << value << '\n';
+			std::cout << "Evaluated: " << value << '\n';
 		}
 	}
 	catch(Exception& e) {

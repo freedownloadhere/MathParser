@@ -3,12 +3,12 @@
 #include <string>
 #include <unordered_map>
 
-#include "VariableMap.hpp"
+#include "MemoryPool.hpp"
 
 class MathEnv {
 public:
 	std::int64_t evaluate(const std::string& toEvaluate);
 
 private:
-	VariableMap m_variableMap;
+	MemoryPool m_variableMap;
 };

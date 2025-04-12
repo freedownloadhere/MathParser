@@ -2,14 +2,14 @@
 
 #include "Token.hpp"
 #include "Value.hpp"
-#include "VariableMap.hpp"
+#include "MemoryPool.hpp"
 
 class Expression {
 public:
     Expression();
     Expression(const Token token);
 
-    Value* evaluate(VariableMap& variableMap) const;
+    Value* evaluate(MemoryPool& variableMap) const;
 
     int getPrecedence() const;
 
