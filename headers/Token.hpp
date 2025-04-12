@@ -5,73 +5,57 @@
 
 class Token {
 public:
-    enum class Type {
-        Base,
-        Number,
-        Add,
-        Subtract,
-        Multiply,
-        Divide,
-        Power,
-        BracketLeft,
-        BracketRight,
-        Label,
-        Equals,
+    class Type {
+    public:
+		static const Type
+			Base,
+            Equals,
+			Add,
+			Subtract,
+			Multiply,
+			Divide,
+			Power,
+			Number,
+			Label,
+			BracketLeft,
+			BracketRight;
+
+        static const Type* getFromChar(char c);
+
+        std::int32_t getID() const;
+
+        std::string_view getName() const;
+
+        std::int32_t getPrecedence() const;
+
+    private: 
+        static inline std::unordered_map<char, const Type*> m_singleCharToToken{};
+
+        Type() = delete;
+        Type(const Type&) = delete;
+        Type(Type&&) = delete;
+
+        explicit Type(std::string_view name, std::int32_t precedence, char charMapping = 0);
+
+        std::string_view m_name;
+        std::int32_t m_precedence;
+        std::int32_t m_id;
     };
 
-    static inline std::unordered_map<char, Type> singleCharToToken = {
-        {'+', Type::Add},
-        {'-', Type::Subtract},
-        {'*', Type::Multiply},
-        {'/', Type::Divide},
-        {'^', Type::Power},
-        {'(', Type::BracketLeft},
-        {')', Type::BracketRight},
-        {'=', Type::Equals},
-    };
-
-    static inline std::unordered_map<Type, std::string_view> tokenToString = {
-        {Type::Base, "Base"},
-        {Type::Number, "Number"},
-        {Type::Add, "Add"},
-        {Type::Subtract, "Subtract"},
-        {Type::Multiply, "Multiply"},
-        {Type::Divide, "Divide"},
-        {Type::Power, "Power"},
-        {Type::BracketLeft, "Left Bracket"},
-        {Type::BracketRight, "Right Bracket"},
-        {Type::Label, "Label"},
-        {Type::Equals, "Equals"},
-    };
-
-    static inline std::unordered_map<Type, int> precedence = {
-        {Type::Base, 1},
-        {Type::Equals, 2},
-        {Type::Add, 3},
-        {Type::Subtract, 3},
-        {Type::Multiply, 4},
-        {Type::Divide, 4},
-        {Type::Power, 5},
-        {Type::Number, 6},
-        {Type::Label, 6},
-        {Type::BracketLeft, 7},
-        {Type::BracketRight, 7},
-    };
-
-    Token(const Type type);
+    Token(const Type* type);
     Token(const std::int64_t number);
     Token(const std::string& label);
 
-    Type getType() const;
+    const Type* getType() const;
 
-    void setType(Type type);
+    void setType(const Type* type);
 
     RValue* getRValue() const;
 
     std::string* getLabel() const;
 
 private:
-    Type m_type = Type::Base;
+    const Type* m_type = &Type::Base;
 
     union Contents {
         std::string* m_label;

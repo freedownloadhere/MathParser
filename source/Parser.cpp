@@ -1,3 +1,5 @@
+// This is a personal academic project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: https://pvs-studio.com
 #include "Parser.hpp"
 #include "Exception.hpp"
 
@@ -13,35 +15,38 @@ Parser::Parser(Lexer& lex, MemoryPool& variableMap) {
         const int currExprPrec = currExpr->getPrecedence();
         const int lastExprPrec = lastExpr->getPrecedence();
 
-        if (currToken.getType() == Token::Type::Label) {
+        if (currToken.getType() == &Token::Type::Label) {
             const std::string& label = *currToken.getLabel();
             variableMap.storeVariable(label);
         }
 
-        if(currToken.getType() == Token::Type::BracketRight) {
+        if(currToken.getType() == &Token::Type::BracketRight) {
             while(
                 lastExpr->getParent() != nullptr &&
-                lastExpr->getToken().getType() != Token::Type::BracketLeft
+                lastExpr->getType() != &Token::Type::BracketLeft
             ) {
                 lastExpr = lastExpr->getParent();
             }
 
-            if(lastExpr->getType() != Token::Type::BracketLeft || lastExpr->getParent() == nullptr)
+            if (lastExpr->getType() != &Token::Type::BracketLeft || lastExpr->getParent() == nullptr) {
+                // ehh
+                delete currExpr;
                 throw Exception("Right bracket is missing its left bracket");
+            }
 
-            lastExpr->setType(Token::Type::BracketRight);
+            lastExpr->setType(&Token::Type::BracketRight);
 
             continue;
         }
 
-        if(lastExpr->getType() == Token::Type::BracketLeft || currExprPrec > lastExprPrec) {
+        if(lastExpr->getType() == &Token::Type::BracketLeft || currExprPrec > lastExprPrec) {
             lastExpr->setNext(currExpr);
             lastExpr = currExpr;
             continue;
         }
 
         while(
-            lastExpr->getParent()->getType() != Token::Type::BracketLeft &&
+            lastExpr->getParent()->getType() != &Token::Type::BracketLeft &&
             lastExpr->getParent() != nullptr &&
             currExprPrec <= lastExpr->getParent()->getPrecedence()
         ) {

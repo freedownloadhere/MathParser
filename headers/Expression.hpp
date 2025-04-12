@@ -4,19 +4,19 @@
 #include "Token.hpp"
 #include "Value.hpp"
 #include "MemoryPool.hpp"
+#include "FuncTable.hpp"
 
 class Expression {
 public:
-    Expression();
-    Expression(const Token token);
+    Expression(const Token& token = Token(&Token::Type::Base));
 
-    Value* evaluate(MemoryPool& variableMap) const;
+    Value* evaluate(MemoryPool& mempool, FuncTable& functable) const;
 
     int getPrecedence() const;
 
-    Token::Type getType() const;
+    const Token::Type* getType() const;
 
-    void setType(Token::Type type);
+    void setType(const Token::Type* type);
 
     Token getToken() const;
 

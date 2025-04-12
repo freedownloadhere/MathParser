@@ -1,57 +1,47 @@
+// This is a personal academic project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: https://pvs-studio.com
 #include "Expression.hpp"
 
 #include "Exception.hpp"
 #include "NativeFunctions.hpp"
 #include "MemoryPool.hpp"
 
-Expression::Expression() : m_token(Token(Token::Type::Base)) { }
-Expression::Expression(const Token token) : m_token(token) { }
+Expression::Expression(const Token& token) 
+	: m_token(token) { }
 
-Value* Expression::evaluate(MemoryPool& mempool) const {
-	Token::Type type = m_token.getType();
+Value* Expression::evaluate(MemoryPool& mempool, FuncTable& functable) const {
+	const Token::Type* type = m_token.getType();
 
-	switch(type) {
-		case Token::Type::Base:
-		case Token::Type::BracketLeft:
-		case Token::Type::BracketRight:
-			return m_left->evaluate(mempool);
-		case Token::Type::Number:
-			return m_token.getRValue();
-		case Token::Type::Label:
-			return mempool.getVariablePtr(*m_token.getLabel());
-		default:;
-	}
+	if(type == &Token::Type::Number)
+		return m_token.getRValue();
 
-	Value* left = m_left->evaluate(mempool);
-	Value* right = m_right->evaluate(mempool);
+	if(type == &Token::Type::Label)
+		return mempool.getVariablePtr(*m_token.getLabel());
 
-	switch(type) {
-		case Token::Type::Add:
-			return NativeFunc::add(mempool, left, right);
-		case Token::Type::Subtract:
-			return NativeFunc::sub(mempool, left, right);
-		case Token::Type::Multiply:
-			return NativeFunc::mul(mempool, left, right);
-		case Token::Type::Divide:
-			return NativeFunc::div(mempool, left, right);
-		case Token::Type::Power:
-			return NativeFunc::pow(mempool, left, right);
-		case Token::Type::Equals:
-			return NativeFunc::assign(mempool, left, right);
-		default:
-			throw Exception("Token could not be evaluated");
-	}
+	Value* op1 = m_left->evaluate(mempool, functable);
+
+	auto unaryFunc = functable.getUnary(type->getID());
+	if (unaryFunc != nullptr)
+		return unaryFunc(mempool, op1);
+
+	Value* op2 = m_right->evaluate(mempool, functable);
+
+	auto binaryFunc = functable.getBinary(type->getID());
+	if (binaryFunc != nullptr)
+		return binaryFunc(mempool, op1, op2);
+
+	throw Exception("Expression could not be evaluated; not mapped to any function");
 }
 
 int Expression::getPrecedence() const {
-	return Token::precedence[m_token.getType()];
+	return m_token.getType()->getPrecedence();
 }
 
-Token::Type Expression::getType() const {
+const Token::Type* Expression::getType() const {
 	return m_token.getType();
 }
 
-void Expression::setType(Token::Type type) {
+void Expression::setType(const Token::Type* type) {
 	m_token.setType(type);
 }
 
@@ -113,14 +103,14 @@ void Expression::print(int tabcount) const {
 			std::cout << "  ";
 	};
 
-	Token::Type type = m_token.getType();
+	const Token::Type* type = m_token.getType();
 
 	m_print_tabs(tabcount);
-	std::cout << Token::tokenToString[type] << " {\n";
+	std::cout << type->getName() << " {\n";
 
 	tabcount++;
 
-	if(type == Token::Type::Number) {
+	if(type == &Token::Type::Number) {
 		m_print_tabs(tabcount);
 		std::cout << "Value: " << m_token.getRValue() << '\n';
 	}
@@ -140,8 +130,6 @@ void Expression::print(int tabcount) const {
 }
 
 Expression::~Expression() {
-	if(m_left)
-		delete m_left;
-	if(m_right)
-		delete m_right;
+	delete m_left;
+	delete m_right;
 }

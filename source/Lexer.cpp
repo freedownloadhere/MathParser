@@ -1,3 +1,5 @@
+// This is a personal academic project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: https://pvs-studio.com
 #include "Lexer.hpp"
 
 #include "Exception.hpp"
@@ -18,23 +20,23 @@ Lexer::Lexer(const std::string& expr) {
         if (bracketDepth < 0)
             throw Exception("Incorrect brackets in sequence");
 
-        Token::Type type = Token::singleCharToToken[c];
+        const Token::Type* type = Token::Type::getFromChar(c);
 
-        if(type != Token::Type::Base) {
-            m_vec.push_back(Token(type));
+        if(type != nullptr) {
+            m_vec.emplace_back(type);
             continue;
         }
 
         if(m_isNumber(c)) {
             std::int64_t number = m_parseNumber(expr, p);
-            m_vec.push_back(Token(number));
+            m_vec.emplace_back(number);
             --p;
             continue;
         }
 
         if(m_isLabelChar(c)) {
             std::string label = m_parseLabel(expr, p);
-            m_vec.push_back(Token(label));
+            m_vec.emplace_back(label);
             --p;
             continue;
         }
@@ -52,14 +54,14 @@ void Lexer::print() const {
     std::cout << "{ ";
 
     for(const auto& token : m_vec) {
-        Token::Type type = token.getType();
+        const Token::Type* type = token.getType();
 
-        std::cout << Token::tokenToString[type];
+        std::cout << type->getName();
 
-        if(type == Token::Type::Number)
+        if(type == &Token::Type::Number)
             std::cout << " " << token.getRValue();
 
-        if(type == Token::Type::Label)
+        if(type == &Token::Type::Label)
             std::cout << " \"" << token.getLabel() << "\"";
 
         std::cout << "; ";
@@ -67,7 +69,6 @@ void Lexer::print() const {
 
     std::cout << "}\n";
 }
-
 
 Token Lexer::nextToken() {
     if(it == m_vec.end())

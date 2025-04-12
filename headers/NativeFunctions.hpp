@@ -6,15 +6,17 @@
 #include "Value.hpp"
 
 namespace NativeFunc {
-	RValue* add(MemoryPool& mempool, Value* left, Value* right);
-	
-	RValue* sub(MemoryPool& mempool, Value* left, Value* right);
+	Value* ident(MemoryPool& mempool, Value* op);
 
-	RValue* mul(MemoryPool& mempool, Value* left, Value* right);
+	Value* add(MemoryPool& mempool, Value* left, Value* right);
 
-	RValue* div(MemoryPool& mempool, Value* left, Value* right);
+	Value* sub(MemoryPool& mempool, Value* left, Value* right);
 
-	RValue* pow(MemoryPool& mempool, Value* left, Value* right);
+	Value* mul(MemoryPool& mempool, Value* left, Value* right);
 
-	LValue* assign(MemoryPool& mempool, Value* left, Value* right);
+	Value* div(MemoryPool& mempool, Value* left, Value* right);
+
+	Value* pow(MemoryPool& mempool, Value* left, Value* right);
+
+	Value* assign(MemoryPool& mempool, Value* left, Value* right);
 }

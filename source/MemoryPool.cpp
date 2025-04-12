@@ -1,14 +1,16 @@
+// This is a personal academic project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: https://pvs-studio.com
 #include "MemoryPool.hpp"
 #include "Exception.hpp"
 
 void MemoryPool::storeVariable(const std::string& name, std::int64_t value) {
 	if (m_varmap.count(name) == 0)
-		m_varmap.emplace(name, value);
+		m_varmap.try_emplace(name, value);
 }
 
 void MemoryPool::storeConstant(std::int64_t value) {
 	if (m_constpool.count(value) == 0)
-		m_constpool.emplace(value, value);
+		m_constpool.try_emplace(value, value);
 }
 
 std::int64_t MemoryPool::readVariable(const std::string& name) const {

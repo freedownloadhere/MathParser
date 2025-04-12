@@ -1,6 +1,12 @@
+// This is a personal academic project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: https://pvs-studio.com
 #include "NativeFunctions.hpp"
 
-RValue* NativeFunc::add(MemoryPool& mempool, Value* left, Value* right) {
+Value* NativeFunc::ident(MemoryPool& mempool, Value* op) {
+	return op;
+}
+
+Value* NativeFunc::add(MemoryPool& mempool, Value* left, Value* right) {
 	std::int64_t lv = left->read();
 	std::int64_t rv = right->read();
 	lv += rv;
@@ -8,7 +14,7 @@ RValue* NativeFunc::add(MemoryPool& mempool, Value* left, Value* right) {
 	return mempool.getConstantPtr(lv);
 }
 
-RValue* NativeFunc::sub(MemoryPool& mempool, Value* left, Value* right) {
+Value* NativeFunc::sub(MemoryPool& mempool, Value* left, Value* right) {
 	std::int64_t lv = left->read();
 	std::int64_t rv = right->read();
 	lv -= rv;
@@ -16,7 +22,7 @@ RValue* NativeFunc::sub(MemoryPool& mempool, Value* left, Value* right) {
 	return mempool.getConstantPtr(lv);
 }
 
-RValue* NativeFunc::mul(MemoryPool& mempool, Value* left, Value* right) {
+Value* NativeFunc::mul(MemoryPool& mempool, Value* left, Value* right) {
 	std::int64_t lv = left->read();
 	std::int64_t rv = right->read();
 	lv *= rv;
@@ -24,7 +30,7 @@ RValue* NativeFunc::mul(MemoryPool& mempool, Value* left, Value* right) {
 	return mempool.getConstantPtr(lv);
 }
 
-RValue* NativeFunc::div(MemoryPool& mempool, Value* left, Value* right) {
+Value* NativeFunc::div(MemoryPool& mempool, Value* left, Value* right) {
 	std::int64_t lv = left->read();
 	std::int64_t rv = right->read();
 	if (rv == 0)
@@ -34,7 +40,7 @@ RValue* NativeFunc::div(MemoryPool& mempool, Value* left, Value* right) {
 	return mempool.getConstantPtr(lv);
 }
 
-RValue* NativeFunc::pow(MemoryPool& mempool, Value* left, Value* right) {
+Value* NativeFunc::pow(MemoryPool& mempool, Value* left, Value* right) {
 	std::int64_t lv = left->read();
 	std::int64_t rv = right->read();
 	if (lv == 0 && rv == 0)
@@ -44,7 +50,7 @@ RValue* NativeFunc::pow(MemoryPool& mempool, Value* left, Value* right) {
 	return mempool.getConstantPtr(lv);
 }
 
-LValue* NativeFunc::assign(MemoryPool& mempool, Value* left, Value* right) {
+Value* NativeFunc::assign(MemoryPool& mempool, Value* left, Value* right) {
 	LValue* left_lvalue = dynamic_cast<LValue*>(left);
 	if (left_lvalue == nullptr)
 		throw Exception("Left operand is not an lvalue");
