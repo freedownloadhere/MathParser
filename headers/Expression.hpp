@@ -34,8 +34,6 @@ public:
 
     void print(int tabcount = 0) const;
 
-    ~Expression();
-
 private:
     Token m_token;
     std::vector<Expression*> m_params;

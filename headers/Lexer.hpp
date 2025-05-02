@@ -1,11 +1,12 @@
 #pragma once
 #include "Pch.hpp"
 
+#include "Allocator.hpp"
 #include "Token.hpp"
 
 class Lexer {
 public:
-    Lexer(const std::string& expr);
+    Lexer(const std::string& expr, Allocator& allocator);
 
     void print() const;
 

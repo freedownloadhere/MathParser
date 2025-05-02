@@ -111,8 +111,3 @@ void Expression::print(int tabcount) const {
 	m_print_tabs(tabcount);
 	std::cout << "}\n";
 }
-
-Expression::~Expression() {
-	for (const auto param : m_params)
-		delete param;
-}

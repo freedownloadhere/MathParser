@@ -4,7 +4,7 @@
 
 #include "Exception.hpp"
 
-Lexer::Lexer(const std::string& expr) {
+Lexer::Lexer(const std::string& expr, Allocator& allocator) {
     const size_t sz = expr.size();
 
     int bracketDepth = 0;
@@ -29,14 +29,14 @@ Lexer::Lexer(const std::string& expr) {
 
         if(m_isNumber(c)) {
             std::int64_t number = m_parseNumber(expr, p);
-            m_vec.emplace_back(number);
+            m_vec.emplace_back(number, allocator);
             --p;
             continue;
         }
 
         if(m_isLabelChar(c)) {
             std::string label = m_parseLabel(expr, p);
-            m_vec.emplace_back(label);
+            m_vec.emplace_back(label, allocator);
             --p;
             continue;
         }

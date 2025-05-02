@@ -1,6 +1,7 @@
 #pragma once
 #include "Pch.hpp"
 
+#include "Allocator.hpp"
 #include "FuncTable.hpp"
 #include "MemoryPool.hpp"
 #include "Value.hpp"
@@ -12,4 +13,5 @@ public:
 private:
 	MemoryPool m_mempool;
 	FuncTable m_functable;
+	Allocator m_allocator;
 };

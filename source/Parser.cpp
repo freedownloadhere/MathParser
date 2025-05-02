@@ -3,14 +3,14 @@
 #include "Parser.hpp"
 #include "Exception.hpp"
 
-Parser::Parser(Lexer& lex, MemoryPool& variableMap) {
-    m_expr = new Expression();
+Parser::Parser(Lexer& lex, MemoryPool& variableMap, Allocator& allocator) {
+    m_expr = allocator.allocate<Expression>();
 
     auto lastExpr = m_expr;
 
     while(!lex.reachedEnd()) {
         auto currToken = lex.nextToken();
-        auto currExpr = new Expression(currToken);
+        auto currExpr = allocator.allocate<Expression>(currToken);
 
         const int currExprPrec = currExpr->getPrecedence();
         const int lastExprPrec = lastExpr->getPrecedence();
@@ -28,11 +28,8 @@ Parser::Parser(Lexer& lex, MemoryPool& variableMap) {
                 lastExpr = lastExpr->getParent();
             }
 
-            if (lastExpr->getType() != &Token::Type::BracketLeft || lastExpr->getParent() == nullptr) {
-                // ehh
-                delete currExpr;
+            if (lastExpr->getType() != &Token::Type::BracketLeft || lastExpr->getParent() == nullptr)
                 throw Exception("Right bracket is missing its left bracket");
-            }
 
             lastExpr->setType(&Token::Type::BracketRight);
 

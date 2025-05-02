@@ -1,6 +1,7 @@
 #pragma once
 #include "Pch.hpp"
 
+#include "Allocator.hpp"
 #include "Value.hpp"
 
 class Token {
@@ -43,8 +44,8 @@ public:
     };
 
     Token(const Type* type);
-    Token(const std::int64_t number);
-    Token(const std::string& label);
+    Token(const std::int64_t number, Allocator& allocator);
+    Token(const std::string& label, Allocator& allocator);
 
     const Type* getType() const;
 
@@ -56,9 +57,5 @@ public:
 
 private:
     const Type* m_type = &Type::Base;
-
-    union Contents {
-        std::string* m_label;
-        RValue* m_rvalue;
-    } m_as{};
+    std::variant<std::string*, RValue*> m_contents;
 };

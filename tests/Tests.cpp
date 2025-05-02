@@ -6,7 +6,7 @@
 #include "Exception.hpp"
 
 int main() {
-	std::ifstream testInput("tests.txt");
+	std::ifstream testInput("../../../tests/tests.txt");
 
 	MathEnv env;
 
