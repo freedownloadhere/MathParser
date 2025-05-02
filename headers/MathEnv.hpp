@@ -13,5 +13,5 @@ public:
 private:
 	MemoryPool m_mempool;
 	FuncTable m_functable;
-	Allocator m_allocator;
+	Allocator m_allocator = Allocator(2048);
 };
