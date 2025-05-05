@@ -57,6 +57,6 @@ Evaluated: 28
 
 The following features are not yet implemented, but are to be added in the future:
 
-[-] Functions and function calls
-[-] Floating point numbers
-[-] The `-x` unary operator
+- Functions and function calls
+- Floating point numbers
+- The `-x` unary operator
