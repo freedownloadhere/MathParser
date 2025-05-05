@@ -1,0 +1,31 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/MathTests.dir/source/Exception.cpp.o"
+  "CMakeFiles/MathTests.dir/source/Exception.cpp.o.d"
+  "CMakeFiles/MathTests.dir/source/Expression.cpp.o"
+  "CMakeFiles/MathTests.dir/source/Expression.cpp.o.d"
+  "CMakeFiles/MathTests.dir/source/FuncTable.cpp.o"
+  "CMakeFiles/MathTests.dir/source/FuncTable.cpp.o.d"
+  "CMakeFiles/MathTests.dir/source/Lexer.cpp.o"
+  "CMakeFiles/MathTests.dir/source/Lexer.cpp.o.d"
+  "CMakeFiles/MathTests.dir/source/MathEnv.cpp.o"
+  "CMakeFiles/MathTests.dir/source/MathEnv.cpp.o.d"
+  "CMakeFiles/MathTests.dir/source/MemoryPool.cpp.o"
+  "CMakeFiles/MathTests.dir/source/MemoryPool.cpp.o.d"
+  "CMakeFiles/MathTests.dir/source/NativeFunctions.cpp.o"
+  "CMakeFiles/MathTests.dir/source/NativeFunctions.cpp.o.d"
+  "CMakeFiles/MathTests.dir/source/Parser.cpp.o"
+  "CMakeFiles/MathTests.dir/source/Parser.cpp.o.d"
+  "CMakeFiles/MathTests.dir/source/Token.cpp.o"
+  "CMakeFiles/MathTests.dir/source/Token.cpp.o.d"
+  "CMakeFiles/MathTests.dir/source/Value.cpp.o"
+  "CMakeFiles/MathTests.dir/source/Value.cpp.o.d"
+  "CMakeFiles/MathTests.dir/tests/Tests.cpp.o"
+  "CMakeFiles/MathTests.dir/tests/Tests.cpp.o.d"
+  "MathTests"
+  "MathTests.pdb"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/MathTests.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()
