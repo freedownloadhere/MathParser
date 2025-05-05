@@ -1,4 +1,0 @@
-/home/fdh/Wsl/MathParser/build/CMakeFiles/MathRepl.dir
-/home/fdh/Wsl/MathParser/build/CMakeFiles/MathTests.dir
-/home/fdh/Wsl/MathParser/build/CMakeFiles/edit_cache.dir
-/home/fdh/Wsl/MathParser/build/CMakeFiles/rebuild_cache.dir
