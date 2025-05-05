@@ -12,10 +12,10 @@ as well as a valid C++20 compiler:
 mkdir build
 cd build
 cmake ..
-make
 ```
 
-This will generate two executables, MathRepl and MathTests.
+You may then use your build system of choice (Visual Studio, Makefiles etc.) to
+build the project. This will generate two executables, MathRepl and MathTests.
 
 In order to use the REPL, run MathRepl.
 
